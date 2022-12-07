@@ -7,7 +7,9 @@ export class ArtistsService {
   constructor(private prismaService: PrismaService) {}
 
   async getAll() {
-    const artists = await this.prismaService.artist.findMany();
+    const artists = await this.prismaService.artist.findMany({
+      include: { albums: true },
+    });
     console.log(artists);
     return artists;
   }
