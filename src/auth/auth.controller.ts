@@ -48,11 +48,12 @@ export class AuthController {
   ): Promise<boolean> {
     return this.authService.logout(userId, res);
   }
+  
   @Public()
   @Put('update/:id')
   update(
     @Param('id') id: number,
-    userBody: AuthDto,
+    @Body()userBody: AuthDto,
     @Res({ passthrough: true }) res: Response,
   ) {
     return this.authService.update(id, userBody, res);

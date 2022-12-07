@@ -10,7 +10,7 @@ const start = async () => {
     const adapterHost = app.get(HttpAdapterHost);
     app.useGlobalFilters(new AllExceptionsFilter(adapterHost));
     app.use(cookieParser());
-    // app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(new ValidationPipe());
 
     await app.listen(PORT, () => {
       console.log(`Server ${PORT}  portida ishga tushdi`);

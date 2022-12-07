@@ -4,7 +4,7 @@ export class AlbumDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-  @IsNotEmpty()
+  // @IsNotEmpty()
   releaseDate?: Date;
   @IsNotEmpty()
   artistId: number;

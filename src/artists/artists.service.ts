@@ -4,16 +4,17 @@ import { ArtistDto } from './dto/create-artist.dto';
 
 @Injectable()
 export class ArtistsService {
-    constructor(private prismaService: PrismaService) { }
-    
+  constructor(private prismaService: PrismaService) {}
+
   async getAll() {
     const artists = await this.prismaService.artist.findMany();
     console.log(artists);
+    return artists;
   }
 
   async getOne(id: number) {
     const artist = await this.prismaService.artist.findUnique({
-      where: { id: id },
+      where: { id: +id },
     });
     if (!artist) {
       throw new BadRequestException('artist not found');
@@ -25,7 +26,7 @@ export class ArtistsService {
     const candidate = await this.prismaService.artist.findUnique({
       where: { name: artistBody.name },
     });
-    if (!candidate) {
+    if (candidate) {
       throw new BadRequestException('bunday artist bor');
     }
     const newartist = await this.prismaService.artist.create({
@@ -38,13 +39,13 @@ export class ArtistsService {
     const candidate = await this.prismaService.artist.findUnique({
       where: { name: artistBody.name },
     });
-    if (candidate && candidate.id == id) {
+    if (candidate && candidate.id != +id) {
       throw new BadRequestException(
         `${artistBody.name} nomli artist allaqachon bor`,
       );
     }
     const updatedArtist = await this.prismaService.artist.update({
-      where: { id: id },
+      where: { id: +id },
       data: artistBody,
     });
     if (!updatedArtist) {
@@ -55,11 +56,12 @@ export class ArtistsService {
 
   async delete(id: number) {
     const artist = await this.prismaService.artist.findUnique({
-      where: { id: id },
+      where: { id: +id },
     });
     if (!artist) {
       throw new BadRequestException('artist not found');
     }
+    await this.prismaService.artist.delete({ where: { id: +id } });
     return { message: 'artist deleted', artist };
   }
 }

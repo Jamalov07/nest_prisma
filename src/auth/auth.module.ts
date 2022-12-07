@@ -19,7 +19,7 @@ import {
     AccessTokenStrategy,
     RefreshTokenFromBearerStrategy,
     RefreshTokenFromCookiesStrategy,
-    { provide: APP_GUARD, useClass: AccessTokenGuard },
+    // { provide: APP_GUARD, useClass: AccessTokenGuard },
   ],
 })
 export class AuthModule {}

@@ -27,7 +27,7 @@ import {
         timestamp: new Date().toISOString(),
         path: httpAdapter.getRequestUrl(ctx.getRequest()),
         method: ctx.getRequest().method,
-        message: exception.response,
+        message: exception,
       };
   
   

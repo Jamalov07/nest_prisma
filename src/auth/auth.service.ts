@@ -64,22 +64,20 @@ export class AuthService {
   }
 
   async update(id: number, authDto: AuthDto, res: Response) {
-    const { email } = authDto;
     const user = await this.prismaService.user.findUnique({
-      where: { id: id },
+      where: { id: +id },
     });
     if (!user) {
       throw new BadRequestException('user not found');
     }
     const candidate = await this.prismaService.user.findUnique({
-      where: { email },
+      where: { email:authDto.email },
     });
-    if (candidate && candidate.id == id) {
+    if (candidate && candidate.id != id) {
       throw new BadRequestException('bunnday email mavjud');
     }
-
     const updatedUser = await this.prismaService.user.update({
-      where: { id: id },
+      where: { id: +id },
       data: authDto,
     });
     const tokens = await this.getTokens(updatedUser.id, updatedUser.email);
@@ -88,7 +86,7 @@ export class AuthService {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
-    return tokens;
+    return { tokens,user:updatedUser };
   }
 
   async refreshTokens(
